@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mPrevButton;
     private ImageButton mNextButton;
     private TextView mQuestionTextView;
+    private TextView mScoreTextView;
     private static final String TAG = "MainActivity";
     private static final String KEY_INDEX = "index";
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
             new Question(R.string.question_asia, true),
     };
     private int mCurrentIndex = 0;
+    private int score = 0;
 
 
     @Override
@@ -37,12 +39,10 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_main);
 
-        if (savedInstanceState != null) {
-            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
-        }
+        ifSavedInstanceStateNull(savedInstanceState);
 
         mQuestionTextView = (TextView) findViewById(R.id.question_textView);
-        updateQuestion();
+        mScoreTextView = (TextView) findViewById(R.id.score_textView);
 
         mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
@@ -64,8 +64,12 @@ public class MainActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                if (mCurrentIndex <= mQuestionBank.length - 1) {
+                    mCurrentIndex = mCurrentIndex + 1;
+                }
                 updateQuestion();
+                setButtonsEnabled(true);
+
             }
         });
 
@@ -74,11 +78,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(mCurrentIndex > 0) {
-                    mCurrentIndex = (mCurrentIndex - 1) % mQuestionBank.length;
+                    mCurrentIndex = mCurrentIndex - 1;
                 }
                 updateQuestion();
+                updateScore();
             }
         });
+
+        updateScore();
+        updateQuestion();
+    }
+
+    private void ifSavedInstanceStateNull(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
     }
 
     private void updateQuestion() {
@@ -86,18 +100,34 @@ public class MainActivity extends AppCompatActivity {
         mQuestionTextView.setText(question);
     }
 
+    private void updateScore() {
+            mScoreTextView.setText("Score: " + score);
+
+    }
+
     private void checkAnswer(boolean userPressedTrue) {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
         int messageResId = 0;
         if (userPressedTrue == answerIsTrue) {
             messageResId = R.string.correct_toast;
+            score++;
+            updateScore();
+            setButtonsEnabled(false);
         } else {
             messageResId = R.string.incorrect_toast;
+            updateScore();
+            setButtonsEnabled(false);
         }
         Toast toast = Toast.makeText(this, messageResId, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
         toast.show();
     }
+
+    private void setButtonsEnabled(boolean enabled) {
+        mTrueButton.setEnabled(enabled);
+        mFalseButton.setEnabled(enabled);
+    }
+
 
     @Override
     public void onStart() {
