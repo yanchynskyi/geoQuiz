@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageButton mNextButton;
     private TextView mQuestionTextView;
     private static final String TAG = "MainActivity";
+    private static final String KEY_INDEX = "index";
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_australia, true),
@@ -29,11 +30,16 @@ public class MainActivity extends AppCompatActivity {
     };
     private int mCurrentIndex = 0;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_main);
+
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+        }
 
         mQuestionTextView = (TextView) findViewById(R.id.question_textView);
         updateQuestion();
@@ -117,6 +123,13 @@ public class MainActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, "onDestroy() called");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i(TAG, "onSaveInstanceState");
+        savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
     }
 
 }
