@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:padding="24dp"
         android:textColor="#183020"
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:textStyle="italic"
         tools:text="Answer"/>
 

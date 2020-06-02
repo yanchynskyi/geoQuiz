@@ -2,6 +2,8 @@ package android.bignerdranch.com;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Gravity;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView mScoreTextView;
     private static final String TAG = "MainActivity";
     private static final String KEY_INDEX = "index";
+    private static final int REQUEST_CODE_CHEAT = 0;
 
     private Question[] mQuestionBank = new Question[] {
             new Question(R.string.question_australia, true),
@@ -31,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
             new Question(R.string.question_americas, true),
             new Question(R.string.question_asia, true),
     };
+
+    private boolean mIsCheater;
     private int mCurrentIndex = 0;
     private int score = 0;
 
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 if (mCurrentIndex <= mQuestionBank.length - 1) {
                     mCurrentIndex = mCurrentIndex + 1;
                 }
+                mIsCheater = false;
                 updateQuestion();
                 setButtonsEnabled(true);
 
@@ -93,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
                 Intent intent = CheatActivity.newIntent(MainActivity.this, answerIsTrue);
-                startActivity(intent);
+                startActivityForResult(intent, REQUEST_CODE_CHEAT);
             }
         });
 
@@ -108,8 +114,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateQuestion() {
-        int question = mQuestionBank[mCurrentIndex].getTextResId();
-        mQuestionTextView.setText(question);
+        if (mCurrentIndex < mQuestionBank.length - 1) {
+            int question = mQuestionBank[mCurrentIndex].getTextResId();
+            mQuestionTextView.setText(question);
+        }else {
+
+        }
     }
 
     private void updateScore() {
@@ -120,7 +130,9 @@ public class MainActivity extends AppCompatActivity {
     private void checkAnswer(boolean userPressedTrue) {
         boolean answerIsTrue = mQuestionBank[mCurrentIndex].isAnswerTrue();
         int messageResId = 0;
-        if (userPressedTrue == answerIsTrue) {
+        if (mIsCheater) {
+            messageResId = R.string.judgment_toast;
+        } else if (userPressedTrue == answerIsTrue) {
             messageResId = R.string.correct_toast;
             score++;
             updateScore();
@@ -140,6 +152,19 @@ public class MainActivity extends AppCompatActivity {
         mFalseButton.setEnabled(enabled);
     }
 
+    @SuppressLint("MissingSuperCall")
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            if (data == null) {
+                return;
+            }
+            mIsCheater = CheatActivity.wasAnswerShown(data);
+        }
+    }
 
     @Override
     public void onStart() {
