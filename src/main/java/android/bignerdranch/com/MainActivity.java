@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mCurrentIndex <= mQuestionBank.length - 1) {
+                if (mCurrentIndex < mQuestionBank.length) {
                     mCurrentIndex = mCurrentIndex + 1;
                 }
                 mIsCheater = false;
@@ -114,12 +114,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateQuestion() {
-        if (mCurrentIndex < mQuestionBank.length - 1) {
+        if (mCurrentIndex < mQuestionBank.length) {
             int question = mQuestionBank[mCurrentIndex].getTextResId();
             mQuestionTextView.setText(question);
-        }else {
-
-        }
+            }else {
+            Intent intent = new Intent(MainActivity.this, StatisticActivity.class);
+            intent.putExtra("score", score);
+            intent.putExtra("countOfQuestions", mQuestionBank.length - 1);
+            startActivity(intent);
+            }
     }
 
     private void updateScore() {
