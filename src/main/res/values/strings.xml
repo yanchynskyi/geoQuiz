@@ -16,15 +16,28 @@
     <string name="soso_statistic_text">Level of knowledge: So so!</string>
     <string name="bad_statistic_text">Level of knowledge: Ohh my! It\'s terribly</string>
 
-    <string name="question_australia">Canberra is the capital of Australia.</string>
-    <string name="question_oceans">The Pacific Ocean is larger than
-        the Atlantic Ocean.</string>
+    //OCEANS
     <string name="question_mideast">The Suez Canal connects the Red Sea
         and the Indian Ocean.</string>
-    <string name="question_africa">The source of the Nile River is in Egypt.</string>
-    <string name="question_americas">The Amazon River is the longest river
-        in the Americas.</string>
+    <string name="question_oceans">The Pacific Ocean is smallest than
+        the Atlantic Ocean.</string>
+    <string name="question_jellyfish">Jellyfish can live forever.</string>
+    <string name="question_lake">There are lakes in the oceans.</string>
+    <string name="question_internet">There is internet in the oceans.</string>
+
+    //MOUNTAINS
+    <string name="qustion_everest">Mount Jomolungma (Everest) in Tibetan means Divine</string>
+    <string name="question_conquered">People have conquered all the mountains in the world.</string>
+    <string name="question_smallest">The smallest officially recorded mountain is 43 meters.</string>
+    <string name="question_deaths">More than 2000 people were killed while climbing Mount Everest.</string>
+    <string name="question_tmp">The temperature during gusts of wind on mountain tops reaches -150 degrees Celsius.</string>
+
+    //COUNTRIES
+    <string name="question_australia">Canberra is the capital of Australia.</string>
     <string name="question_asia">Lake Baikal is the world\'s oldest and deepest
         freshwater lake.</string>
+    <string name="question_italy">Italy is famous for its perfumes, wines and is the center of fashion in the world.</string>
+    <string name="question_switzerland">Switzerland is a banker country of the whole planet.</string>
+    <string name="question_romania">Romania organizes the world\'s only congress of sorcerers every year.</string>
 
 </resources>
